@@ -23,7 +23,7 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id; // pk
 
-    private String userId; // 아이디
+    private String loginId; // 아이디
 
     private String password; // 비밀번호
 
@@ -44,8 +44,8 @@ public class User implements UserDetails {
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    public User(String userId, String password, String ceoName, long businessNum, String businessName, String businessType, String businessItem, String businessAddress) {
-        this.userId = userId;
+    public User(String loginId, String password, String ceoName, long businessNum, String businessName, String businessType, String businessItem, String businessAddress) {
+        this.loginId = loginId;
         this.setPassword(password);
         this.ceoName = ceoName;
         this.businessNum = businessNum;
@@ -81,7 +81,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userId;
+        return loginId;
     }
 
     @Override

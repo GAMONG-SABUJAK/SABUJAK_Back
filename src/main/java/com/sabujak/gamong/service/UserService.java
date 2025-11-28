@@ -4,9 +4,9 @@ import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
-import com.sabujak.gamong.exception.AlreadyUserIdException;
+import com.sabujak.gamong.exception.AlreadyLoginIdException;
 import com.sabujak.gamong.exception.InvalidPasswordException;
-import com.sabujak.gamong.exception.InvalidUserIdException;
+import com.sabujak.gamong.exception.InvalidLoginIdException;
 import com.sabujak.gamong.repository.UserRepository;
 import com.sabujak.gamong.security.JwtUtility;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +24,11 @@ public class UserService {
     // 회원가입
     @Transactional
     public void signUp(ReqSignUp reqSignUp) {
-        userRepository.findByUserId(reqSignUp.userId())
-                .ifPresent(u -> { throw new AlreadyUserIdException(); });
+        userRepository.findByLoginId(reqSignUp.loginId())
+                .ifPresent(u -> { throw new AlreadyLoginIdException(); });
 
         User user = new User(
-                reqSignUp.userId(),
+                reqSignUp.loginId(),
                 reqSignUp.password(),
                 reqSignUp.ceoName(),
                 reqSignUp.businessNum(),
@@ -42,10 +42,10 @@ public class UserService {
 
     // 로그인
     public JwtRes login(ReqLogin reqLogin) {
-        User user = userRepository.findByUserId(reqLogin.userId())
-                .orElseThrow(InvalidUserIdException::new);
+        User user = userRepository.findByLoginId(reqLogin.loginId())
+                .orElseThrow(InvalidLoginIdException::new);
         if (!user.checkPassword(reqLogin.password()))
             throw new InvalidPasswordException();
-        return new JwtRes(jwtUtility.generateJwt(user.getUserId()));
+        return new JwtRes(jwtUtility.generateJwt(user.getLoginId()));
     }
 }
