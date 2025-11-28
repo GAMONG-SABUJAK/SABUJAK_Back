@@ -27,7 +27,8 @@ public class UserService {
         userRepository.findByUserId(reqSignUp.userId())
                 .ifPresent(u -> { throw new AlreadyUserIdException(); });
 
-        User user = new User(reqSignUp.userId(),
+        User user = new User(
+                reqSignUp.userId(),
                 reqSignUp.password(),
                 reqSignUp.ceoName(),
                 reqSignUp.businessNum(),
