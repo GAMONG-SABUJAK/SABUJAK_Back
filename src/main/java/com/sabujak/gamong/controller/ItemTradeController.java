@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/itemtrade")
+@RequestMapping("/item-trade")
 public class ItemTradeController {
 
     private final ItemTradeService itemTradeService;

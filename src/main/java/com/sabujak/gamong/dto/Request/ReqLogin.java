@@ -1,7 +1,7 @@
 package com.sabujak.gamong.dto.Request;
 
 public record ReqLogin(
-        String userId,
+        String loginId,
         String password
 ) {
 }

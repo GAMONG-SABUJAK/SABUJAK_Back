@@ -31,6 +31,6 @@ public class Bookmark {
     public Bookmark(User user, ItemTrade itemTrade) {
         this.user = user;
         this.itemTrade = itemTrade;
-        this.createAt = LocalDateTime.now();enum
+        this.createAt = LocalDateTime.now();
     }
 }

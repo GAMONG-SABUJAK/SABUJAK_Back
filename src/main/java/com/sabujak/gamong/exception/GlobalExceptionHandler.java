@@ -9,19 +9,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     // User
-    @ExceptionHandler(AlreadyUserIdException.class)
-    public ResponseEntity<String> AlreadyUserId(AlreadyUserIdException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 있는 UserId");
+    @ExceptionHandler(AlreadyLoginIdException.class)
+    public ResponseEntity<String> AlreadyLoginId(AlreadyLoginIdException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 있는 LoginId");
     }
 
-    @ExceptionHandler(InvalidUserIdException.class)
-    public ResponseEntity<String> InvalidUserId(InvalidUserIdException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 UserId");
+    @ExceptionHandler(InvalidLoginIdException.class)
+    public ResponseEntity<String> InvalidLoginId(InvalidLoginIdException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 LoginId");
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<String> InvalidPassword(InvalidPasswordException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 password");
+    }
+
+    // ItemTrade
+    @ExceptionHandler(EmptyItemTradeIdException.class)
+    public ResponseEntity<String> EmptyItemTradeId(EmptyItemTradeIdException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("없는 ItemTradeId");
     }
 
     // Jwt

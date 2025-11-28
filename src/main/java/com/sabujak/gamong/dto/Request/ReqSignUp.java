@@ -1,7 +1,7 @@
 package com.sabujak.gamong.dto.Request;
 
 public record ReqSignUp(
-        String userId,
+        String loginId,
         String password,
         String ceoName,
         long businessNum,
