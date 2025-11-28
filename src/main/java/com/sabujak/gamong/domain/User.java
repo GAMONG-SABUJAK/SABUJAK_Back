@@ -10,9 +10,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter // 유저
 public class User {
-
     @Id
     @GeneratedValue
     private Long id; // pk
@@ -33,7 +32,7 @@ public class User {
 
     private String businessAddress; // 사업장주소
 
-    private LocalDateTime createAt; // 생성시점
+    private LocalDateTime createAt; // 생성 시점
 
     public User(String userId, String password, String ceoName, long businessNum, String businessName, String businessType, String businessItem, String businessAddress) {
         this.userId = userId;

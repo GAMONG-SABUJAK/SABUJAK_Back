@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter // 재고 즐겨찾기
 public class Bookmark {
     @Id
     @GeneratedValue
@@ -31,6 +31,6 @@ public class Bookmark {
     public Bookmark(User user, ItemTrade itemTrade) {
         this.user = user;
         this.itemTrade = itemTrade;
-        this.createAt = LocalDateTime.now();
+        this.createAt = LocalDateTime.now();enum
     }
 }
