@@ -2,7 +2,6 @@ package com.sabujak.gamong.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -13,6 +12,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AlreadyUserIdException.class)
     public ResponseEntity<String> AlreadyUserId(AlreadyUserIdException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 있는 UserId");
+    }
+
+    @ExceptionHandler(InvalidUserIdException.class)
+    public ResponseEntity<String> InvalidUserId(InvalidUserIdException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 UserId");
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<String> InvalidPassword(InvalidPasswordException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 password");
     }
 
     // Jwt
