@@ -1,6 +1,8 @@
 package com.sabujak.gamong.controller;
 
+import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
+import com.sabujak.gamong.dto.Response.JwtRes;
 import com.sabujak.gamong.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,11 @@ public class UserController {
     public ResponseEntity<Void> signUp(ReqSignUp reqSignUp) {
         userService.signUp(reqSignUp);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<JwtRes> signUp(ReqLogin reqLogin) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(reqLogin));
     }
 
 }
