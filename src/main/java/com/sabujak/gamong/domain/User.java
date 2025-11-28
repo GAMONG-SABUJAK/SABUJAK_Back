@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 public class User {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id; // pk
 
     private String userId; // 아이디
