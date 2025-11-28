@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter // 재고 거래
 public class ItemTrade {
     @Id
     @GeneratedValue
@@ -34,9 +34,9 @@ public class ItemTrade {
 
     private long price; // 가격
 
-    private LocalDateTime createAt; // 생성시점
+    private LocalDateTime createAt; // 생성 시점
 
-    private LocalDateTime updateAt; // 수정시점
+    private LocalDateTime updateAt; // 수정 시점
 
     public ItemTrade(User user, HashTag hashTag, String itemName, String title, String description, long price) {
         this.user = user;
