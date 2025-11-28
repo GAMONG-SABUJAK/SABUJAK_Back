@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -34,9 +36,12 @@ public class User {
 
     private LocalDateTime createAt; // 생성 시점
 
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
     public User(String userId, String password, String ceoName, long businessNum, String businessName, String businessType, String businessItem, String businessAddress) {
         this.userId = userId;
-        this.password = password;
+        this.setPassword(password);
         this.ceoName = ceoName;
         this.businessNum = businessNum;
         this.businessName = businessName;
@@ -44,5 +49,17 @@ public class User {
         this.businessItem = businessItem;
         this.businessAddress = businessAddress;
         this.createAt = LocalDateTime.now();
+    }
+
+    public void setPassword(String password) {
+        this.password = passwordEncoding(password);
+    }
+
+    public String passwordEncoding(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    public boolean checkPassword(String rawPassword) {
+        return passwordEncoder.matches(rawPassword, this.password);
     }
 }
