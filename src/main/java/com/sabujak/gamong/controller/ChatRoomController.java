@@ -16,9 +16,9 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
-    @PostMapping("/make")
-    public ResponseEntity<String> makeChatRoom(ReqItemTradeId reqItemTradeId) {
-        chatRoomService.makeChatRoom(reqItemTradeId);
+    @PostMapping("/create")
+    public ResponseEntity<String> createChatRoom(ReqItemTradeId reqItemTradeId) {
+        chatRoomService.createChatRoom(reqItemTradeId);
         return ResponseEntity.status(HttpStatus.CREATED).body("채팅룸 생성 성공");
     }
 }

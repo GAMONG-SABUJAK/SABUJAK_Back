@@ -19,7 +19,7 @@ public class ChatRoomService {
     private final ItemTradeRepository itemTradeRepository;
 
     @Transactional
-    public void makeChatRoom(ReqItemTradeId reqItemTradeId) {
+    public void createChatRoom(ReqItemTradeId reqItemTradeId) {
         ItemTrade itemTrade = itemTradeRepository.findById(reqItemTradeId.itemTradeId())
                 .orElseThrow(EmptyItemTradeIdException::new);
 
