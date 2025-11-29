@@ -19,9 +19,9 @@ public class ItemTradeController {
     private final ItemTradeService itemTradeService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Void> uploadItemTrade(@AuthenticationPrincipal User user, ReqItemTrade reqItemTrade) {
+    public ResponseEntity<String> uploadItemTrade(@AuthenticationPrincipal User user, ReqItemTrade reqItemTrade) {
         itemTradeService.uplodeItemTrade(user, reqItemTrade);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body("재고 거래 글 생성 성공");
     }
 
 
