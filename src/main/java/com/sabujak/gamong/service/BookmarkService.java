@@ -21,8 +21,8 @@ public class BookmarkService {
 
     // 재고 거래 글 즐겨찾기 토글
     @Transactional
-    public String toggleBookmark(User user, ReqItemTradeId reqItemTradeId) {
-        ItemTrade itemTrade = itemTradeRepository.findById(reqItemTradeId.itemTradeId())
+    public String toggleBookmark(User user, Long itemTradeId) {
+        ItemTrade itemTrade = itemTradeRepository.findById(itemTradeId)
                 .orElseThrow(InvalidItemTradeIdException::new);
 
         return bookmarkRepository.findByUserAndItemTrade(user, itemTrade)

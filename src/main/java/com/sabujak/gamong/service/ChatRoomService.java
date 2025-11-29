@@ -20,8 +20,8 @@ public class ChatRoomService {
 
     // 재고 거래 글 채팅룽 생성
     @Transactional
-    public void createChatRoom(ReqItemTradeId reqItemTradeId) {
-        ItemTrade itemTrade = itemTradeRepository.findById(reqItemTradeId.itemTradeId())
+    public void createChatRoom(Long itemTradeId) {
+        ItemTrade itemTrade = itemTradeRepository.findById(itemTradeId)
                 .orElseThrow(InvalidItemTradeIdException::new);
 
         ChatRoom chatRoom = new ChatRoom(itemTrade);
