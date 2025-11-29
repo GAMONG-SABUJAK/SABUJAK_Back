@@ -2,6 +2,7 @@ package com.sabujak.gamong.controller;
 
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
+import com.sabujak.gamong.dto.Response.ItemTradeRes;
 import com.sabujak.gamong.service.ItemTradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,10 @@ public class ItemTradeController {
     public ResponseEntity<String> deleteItemTrade(@AuthenticationPrincipal User user, @PathVariable Long itemTradeId) {
         itemTradeService.deleteItemTrade(user, itemTradeId);
         return ResponseEntity.status(HttpStatus.OK).body("재고 거래 글 삭제 성공");
+    }
+
+    @GetMapping("/{itemTradeId}")
+    public ResponseEntity<ItemTradeRes> getItemTrade(@PathVariable Long itemTradeId) {
+        return ResponseEntity.status(HttpStatus.OK).body(itemTradeService.getItemTrade(itemTradeId));
     }
 }

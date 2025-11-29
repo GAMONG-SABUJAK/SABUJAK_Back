@@ -3,8 +3,11 @@ package com.sabujak.gamong.service;
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
+import com.sabujak.gamong.dto.Response.ItemTradeRes;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.exception.InvalidUserException;
+import com.sabujak.gamong.repository.BookmarkRepository;
+import com.sabujak.gamong.repository.ChatRoomRepository;
 import com.sabujak.gamong.repository.ItemTradeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,8 @@ import java.util.Objects;
 public class ItemTradeService {
 
     private final ItemTradeRepository itemTradeRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     // 재고 거래 글 생성
     @Transactional
@@ -44,5 +49,22 @@ public class ItemTradeService {
             throw new InvalidUserException();
 
         itemTradeRepository.delete(itemTrade);
+    }
+
+    // 재고 거래 글 개별 조회
+    public ItemTradeRes getItemTrade(Long itemTradeId) {
+        ItemTrade itemTrade = itemTradeRepository.findById(itemTradeId)
+                .orElseThrow(InvalidItemTradeIdException::new);
+
+        return new ItemTradeRes(
+                itemTradeId,
+                itemTrade.getHashTag(),
+                itemTrade.getTitle(),
+                itemTrade.getDescription(),
+                itemTrade.getPrice(),
+                itemTrade.getUser().getBusinessAddress(),
+                chatRoomRepository.countChatRoomByItemTradeId(itemTradeId),
+                bookmarkRepository.countBookmarkByItemTradeId(itemTradeId)
+        );
     }
 }
