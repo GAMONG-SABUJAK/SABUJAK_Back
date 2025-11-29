@@ -19,6 +19,7 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final ItemTradeRepository itemTradeRepository;
 
+    // 재고 거래 글 즐겨찾기 토글
     @Transactional
     public String toggleBookmark(User user, ReqItemTradeId reqItemTradeId) {
         ItemTrade itemTrade = itemTradeRepository.findById(reqItemTradeId.itemTradeId())

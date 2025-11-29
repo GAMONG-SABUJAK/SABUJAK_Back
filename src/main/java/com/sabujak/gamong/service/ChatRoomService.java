@@ -18,6 +18,7 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final ItemTradeRepository itemTradeRepository;
 
+    // 재고 거래 글 채팅룽 생성
     @Transactional
     public void createChatRoom(ReqItemTradeId reqItemTradeId) {
         ItemTrade itemTrade = itemTradeRepository.findById(reqItemTradeId.itemTradeId())
