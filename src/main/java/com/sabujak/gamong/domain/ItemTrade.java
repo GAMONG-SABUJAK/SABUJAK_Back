@@ -27,7 +27,7 @@ public class ItemTrade {
 
     private String itemName; // 재고 이름
 
-    private String title; // 거래글 제목
+    private String title; // 거래 글 제목
 
     @Lob
     private String description; // 재고 설명

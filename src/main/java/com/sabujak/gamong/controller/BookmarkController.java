@@ -2,7 +2,7 @@ package com.sabujak.gamong.controller;
 
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.Request.ReqItemTradeId;
-import com.sabujak.gamong.service.BookMarkService;
+import com.sabujak.gamong.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bookmark")
-public class BookMarkController {
+public class BookmarkController {
 
-    private final BookMarkService bookMarkService;
+    private final BookmarkService bookmarkService;
 
     @PostMapping("/toggle")
     public ResponseEntity<String> toggleBookmark(@AuthenticationPrincipal User user, ReqItemTradeId reqItemTradeId) {
-        return ResponseEntity.status(HttpStatus.OK).body(bookMarkService.toggleBookmark(user, reqItemTradeId));
+        return ResponseEntity.status(HttpStatus.OK).body(bookmarkService.toggleBookmark(user, reqItemTradeId));
     }
 }
