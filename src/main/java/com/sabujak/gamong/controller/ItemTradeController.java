@@ -22,7 +22,7 @@ public class ItemTradeController {
         return ResponseEntity.status(HttpStatus.CREATED).body("재고 거래 글 생성 성공");
     }
 
-    @DeleteMapping("/delete/{itemTradeId}")
+    @DeleteMapping("/{itemTradeId}")
     public ResponseEntity<String> deleteItemTrade(@AuthenticationPrincipal User user, @PathVariable Long itemTradeId) {
         itemTradeService.deleteItemTrade(user, itemTradeId);
         return ResponseEntity.status(HttpStatus.OK).body("재고 거래 글 삭제 성공");
