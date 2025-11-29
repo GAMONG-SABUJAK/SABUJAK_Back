@@ -10,23 +10,28 @@ public class GlobalExceptionHandler {
 
     // User
     @ExceptionHandler(AlreadyLoginIdException.class)
-    public ResponseEntity<String> AlreadyLoginId(AlreadyLoginIdException e) {
+    public ResponseEntity<String> alreadyLoginId(AlreadyLoginIdException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 있는 LoginId");
     }
 
     @ExceptionHandler(InvalidLoginIdException.class)
-    public ResponseEntity<String> InvalidLoginId(InvalidLoginIdException e) {
+    public ResponseEntity<String> invalidLoginId(InvalidLoginIdException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 LoginId");
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<String> InvalidPassword(InvalidPasswordException e) {
+    public ResponseEntity<String> invalidPassword(InvalidPasswordException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 password");
     }
 
+    @ExceptionHandler(InvalidUserException.class)
+    public ResponseEntity<String> invalidUser(InvalidUserException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없는 유저입니다.");
+    }
+
     // ItemTrade
-    @ExceptionHandler(EmptyItemTradeIdException.class)
-    public ResponseEntity<String> EmptyItemTradeId(EmptyItemTradeIdException e) {
+    @ExceptionHandler(InvalidItemTradeIdException.class)
+    public ResponseEntity<String> invalidItemTradeId(InvalidItemTradeIdException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("없는 ItemTradeId");
     }
 

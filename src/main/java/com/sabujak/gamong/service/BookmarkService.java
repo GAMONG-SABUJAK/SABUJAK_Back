@@ -4,7 +4,7 @@ import com.sabujak.gamong.domain.Bookmark;
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.Request.ReqItemTradeId;
-import com.sabujak.gamong.exception.EmptyItemTradeIdException;
+import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.repository.BookmarkRepository;
 import com.sabujak.gamong.repository.ItemTradeRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class BookmarkService {
     @Transactional
     public String toggleBookmark(User user, ReqItemTradeId reqItemTradeId) {
         ItemTrade itemTrade = itemTradeRepository.findById(reqItemTradeId.itemTradeId())
-                .orElseThrow(EmptyItemTradeIdException::new);
+                .orElseThrow(InvalidItemTradeIdException::new);
 
         return bookmarkRepository.findByUserAndItemTrade(user, itemTrade)
                 .map(bookmark -> {

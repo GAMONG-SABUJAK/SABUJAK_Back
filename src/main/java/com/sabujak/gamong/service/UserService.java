@@ -35,7 +35,8 @@ public class UserService {
                 reqSignUp.businessName(),
                 reqSignUp.businessType(),
                 reqSignUp.businessItem(),
-                reqSignUp.businessAddress());
+                reqSignUp.businessAddress()
+        );
 
         userRepository.save(user);
     }
@@ -44,8 +45,10 @@ public class UserService {
     public JwtRes login(ReqLogin reqLogin) {
         User user = userRepository.findByLoginId(reqLogin.loginId())
                 .orElseThrow(InvalidLoginIdException::new);
+
         if (!user.checkPassword(reqLogin.password()))
             throw new InvalidPasswordException();
+
         return new JwtRes(jwtUtility.generateJwt(user.getLoginId()));
     }
 }
