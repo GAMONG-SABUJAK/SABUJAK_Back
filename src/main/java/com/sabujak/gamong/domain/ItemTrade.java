@@ -32,13 +32,13 @@ public class ItemTrade {
     @Lob
     private String description; // 재고 설명
 
-    private long price; // 가격
+    private String price; // 가격
 
     private LocalDateTime createAt; // 생성 시점
 
     private LocalDateTime updateAt; // 수정 시점
 
-    public ItemTrade(User user, HashTag hashTag, String itemName, String title, String description, long price) {
+    public ItemTrade(User user, HashTag hashTag, String itemName, String title, String description, String price) {
         this.user = user;
         this.hashTag = hashTag;
         this.itemName = itemName;

@@ -1,7 +1,9 @@
 package com.sabujak.gamong.controller;
 
 import com.sabujak.gamong.domain.User;
+import com.sabujak.gamong.dto.Request.ReqAddress;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
+import com.sabujak.gamong.dto.Response.ItemTradeByAddressRes;
 import com.sabujak.gamong.dto.Response.ItemTradeRes;
 import com.sabujak.gamong.service.ItemTradeService;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +34,10 @@ public class ItemTradeController {
     @GetMapping("/{itemTradeId}")
     public ResponseEntity<ItemTradeRes> getItemTrade(@PathVariable Long itemTradeId) {
         return ResponseEntity.status(HttpStatus.OK).body(itemTradeService.getItemTrade(itemTradeId));
+    }
+
+    @GetMapping("/address")
+    public ResponseEntity<ItemTradeByAddressRes> getItemTradeByAddress(@RequestParam String address) {
+        return ResponseEntity.status(HttpStatus.OK).body(itemTradeService.getItemTradeByAddress(address));
     }
 }

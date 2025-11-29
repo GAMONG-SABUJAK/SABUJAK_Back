@@ -2,7 +2,9 @@ package com.sabujak.gamong.service;
 
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
+import com.sabujak.gamong.dto.Request.ReqAddress;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
+import com.sabujak.gamong.dto.Response.ItemTradeByAddressRes;
 import com.sabujak.gamong.dto.Response.ItemTradeRes;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.exception.InvalidUserException;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -59,6 +62,7 @@ public class ItemTradeService {
         return new ItemTradeRes(
                 itemTradeId,
                 itemTrade.getHashTag(),
+                itemTrade.getItemName(),
                 itemTrade.getTitle(),
                 itemTrade.getDescription(),
                 itemTrade.getPrice(),
@@ -66,5 +70,25 @@ public class ItemTradeService {
                 chatRoomRepository.countChatRoomByItemTradeId(itemTradeId),
                 bookmarkRepository.countBookmarkByItemTradeId(itemTradeId)
         );
+    }
+
+    // 재고 거래 글 위치별 조회
+    public ItemTradeByAddressRes getItemTradeByAddress(String address) {
+        List<ItemTradeRes> itemTradeResList = itemTradeRepository.findByUser_BusinessAddress(address)
+                .stream()
+                .map(itemTrade -> new ItemTradeRes(
+                        itemTrade.getId(),
+                        itemTrade.getHashTag(),
+                        itemTrade.getItemName(),
+                        itemTrade.getTitle(),
+                        itemTrade.getDescription(),
+                        itemTrade.getPrice(),
+                        itemTrade.getUser().getBusinessAddress(),
+                        chatRoomRepository.countChatRoomByItemTradeId(itemTrade.getId()),
+                        bookmarkRepository.countBookmarkByItemTradeId(itemTrade.getId())
+                ))
+                .toList();
+
+        return new ItemTradeByAddressRes(address, itemTradeResList);
     }
 }
