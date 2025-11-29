@@ -7,6 +7,6 @@ public record ReqItemTrade(
         String itemName,
         String title,
         String description,
-        long price
+        String price
 ) {
 }
