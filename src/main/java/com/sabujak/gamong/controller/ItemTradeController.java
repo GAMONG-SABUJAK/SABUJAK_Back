@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +22,9 @@ public class ItemTradeController {
         return ResponseEntity.status(HttpStatus.CREATED).body("재고 거래 글 생성 성공");
     }
 
-
+    @DeleteMapping("/delete/{itemTradeId}")
+    public ResponseEntity<String> deleteItemTrade(@AuthenticationPrincipal User user, @PathVariable Long itemTradeId) {
+        itemTradeService.deleteItemTrade(user, itemTradeId);
+        return ResponseEntity.status(HttpStatus.OK).body("재고 거래 글 삭제 성공");
+    }
 }

@@ -3,7 +3,7 @@ package com.sabujak.gamong.service;
 import com.sabujak.gamong.domain.ChatRoom;
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.dto.Request.ReqItemTradeId;
-import com.sabujak.gamong.exception.EmptyItemTradeIdException;
+import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.repository.ChatRoomRepository;
 import com.sabujak.gamong.repository.ItemTradeRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,10 @@ public class ChatRoomService {
     @Transactional
     public void createChatRoom(ReqItemTradeId reqItemTradeId) {
         ItemTrade itemTrade = itemTradeRepository.findById(reqItemTradeId.itemTradeId())
-                .orElseThrow(EmptyItemTradeIdException::new);
+                .orElseThrow(InvalidItemTradeIdException::new);
 
         ChatRoom chatRoom = new ChatRoom(itemTrade);
+
         chatRoomRepository.save(chatRoom);
     }
 }
