@@ -35,6 +35,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("없는 ItemTradeId");
     }
 
+    @ExceptionHandler(AlreadyExistChatRoomException.class)
+    public ResponseEntity<String> alreadyExistChatRoom(AlreadyExistChatRoomException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 있는 채팅방입니다.");
+    }
+
     // Jwt
     @ExceptionHandler(HandleJwtException.class)
     public ResponseEntity<String> handleJwt(HandleJwtException e) {
