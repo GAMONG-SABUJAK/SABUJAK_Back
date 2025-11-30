@@ -31,4 +31,9 @@ public class ChatMessage {
         this.createAt = LocalDateTime.now();
         this.readYn = false;
     }
+
+    public void read() {
+        this.readYn = true;
+    }
+
 }
