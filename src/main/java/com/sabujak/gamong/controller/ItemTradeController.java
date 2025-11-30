@@ -20,7 +20,7 @@ public class ItemTradeController {
     private final ItemTradeService itemTradeService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createItemTrade(@AuthenticationPrincipal User user, ReqItemTrade reqItemTrade) {
+    public ResponseEntity<String> createItemTrade(@AuthenticationPrincipal User user, @RequestBody ReqItemTrade reqItemTrade) {
         itemTradeService.createItemTrade(user, reqItemTrade);
         return ResponseEntity.status(HttpStatus.CREATED).body("재고 거래 글 생성 성공");
     }
