@@ -22,14 +22,21 @@ public class ChatRoom {
     private ItemTrade itemTrade; // 재고거래 글
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User receiverUser; // 메시지 받는 사람
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User senderUser; // 메시지 보내려는 사람
 
     private LocalDateTime createAt; // 생성 시점
 
-    public ChatRoom(ItemTrade itemTrade) {
+    public ChatRoom(ItemTrade itemTrade, User receiverUser, User senderUser) {
         this.itemTrade = itemTrade;
+        this.receiverUser = receiverUser;
+        this.senderUser = senderUser;
         this.createAt = LocalDateTime.now();
     }
 }
