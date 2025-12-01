@@ -27,6 +27,8 @@ public class User implements UserDetails {
 
     private String password; // 비밀번호
 
+    private String nickname; // 닉네임
+
     private String ceoName; // 대표자명
 
     private long businessNum; // 사업자등록번호
@@ -44,9 +46,10 @@ public class User implements UserDetails {
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    public User(String loginId, String password, String ceoName, long businessNum, String businessName, String businessType, String businessItem, String businessAddress) {
+    public User(String loginId, String password, String nickname, String ceoName, long businessNum, String businessName, String businessType, String businessItem, String businessAddress) {
         this.loginId = loginId;
         this.setPassword(password);
+        this.nickname = nickname;
         this.ceoName = ceoName;
         this.businessNum = businessNum;
         this.businessName = businessName;

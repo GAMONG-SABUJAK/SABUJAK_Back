@@ -30,6 +30,7 @@ public class UserService {
         User user = new User(
                 reqSignUp.loginId(),
                 reqSignUp.password(),
+                reqSignUp.nickname(),
                 reqSignUp.ceoName(),
                 reqSignUp.businessNum(),
                 reqSignUp.businessName(),
