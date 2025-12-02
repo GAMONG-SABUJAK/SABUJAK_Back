@@ -84,8 +84,8 @@ public class ItemTradeService {
                         itemTrade.getDescription(),
                         itemTrade.getPrice(),
                         itemTrade.getUser().getBusinessAddress(),
-                        chatRoomRepository.countChatRoomByItemTradeId(itemTrade.getId()),
-                        bookmarkRepository.countBookmarkByItemTradeId(itemTrade.getId())
+                        itemTrade.getChatRoomList().size(),
+                        itemTrade.getBookmarkList().size()
                 ))
                 .toList();
 
