@@ -18,11 +18,13 @@ public class BookmarkController {
 
     private final BookmarkService bookmarkService;
 
+    // 재고 거래 글 즐겨찾기 토글
     @PostMapping("/toggle/{itemTradeId}")
     public ResponseEntity<String> toggleBookmark(@AuthenticationPrincipal User user, @PathVariable Long itemTradeId) {
         return ResponseEntity.status(HttpStatus.OK).body(bookmarkService.toggleBookmark(user, itemTradeId));
     }
 
+    // 내 즐겨찾기 리스트 보기
     @GetMapping("/my-list")
     public ResponseEntity<List<ItemTradeRes>> getMyBookmarkList(@AuthenticationPrincipal User user) {
         return ResponseEntity.status(HttpStatus.OK).body(bookmarkService.getMyBookmarkList(user));
