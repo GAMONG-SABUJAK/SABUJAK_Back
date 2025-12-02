@@ -17,6 +17,7 @@ public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
 
+    // 재고 거래 채팅 메시지 보내기
     public ChatMessage sendChatMessage(ReqChatMessage reqChatMessage) {
         ChatMessage chatMessage = new ChatMessage(
                 reqChatMessage.chatRoomId(),
@@ -29,6 +30,7 @@ public class ChatMessageService {
         return chatMessage;
     }
 
+    // 재고 거래 채팅 메시지 조회
     public List<ChatMessageRes> getChatMessage(Long chatRoomId) {
         return chatMessageRepository.findByChatRoomIdOrderByCreateAtAsc(chatRoomId).stream()
                 .map(dto -> new ChatMessageRes(
@@ -42,6 +44,7 @@ public class ChatMessageService {
                 .toList();
     }
 
+    // 재고 거래 채팅 메시지 읽기
     @Transactional
     public void readMessage(Long chatRoomId, Long userId) {
         List<ChatMessage> messages = chatMessageRepository

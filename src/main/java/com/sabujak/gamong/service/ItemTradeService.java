@@ -2,6 +2,7 @@ package com.sabujak.gamong.service;
 
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
+import com.sabujak.gamong.dto.FileDTO;
 import com.sabujak.gamong.dto.Request.ReqAddress;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
 import com.sabujak.gamong.dto.Response.ItemTradeByAddressRes;
@@ -61,6 +62,13 @@ public class ItemTradeService {
 
         return new ItemTradeRes(
                 itemTradeId,
+                new FileDTO(
+                        itemTrade.getJoinItemTradeImageList().getFirst().getFileName(),
+                        itemTrade.getJoinItemTradeImageList().getFirst().getFileType(),
+                        itemTrade.getJoinItemTradeImageList().getFirst().getFileSize(),
+                        itemTrade.getJoinItemTradeImageList().getFirst().getFileUrl(),
+                        itemTrade.getJoinItemTradeImageList().getFirst().getFileKey()
+                ),
                 itemTrade.getHashTag(),
                 itemTrade.getItemName(),
                 itemTrade.getTitle(),

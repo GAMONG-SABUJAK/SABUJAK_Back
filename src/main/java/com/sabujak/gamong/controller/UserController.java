@@ -19,12 +19,14 @@ public class UserController {
 
     private final UserService userService;
 
+    // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody ReqSignUp reqSignUp) {
         userService.signUp(reqSignUp);
         return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
     }
 
+    // 로그인
     @PostMapping("/login")
     public ResponseEntity<JwtRes> signUp(@RequestBody ReqLogin reqLogin) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.login(reqLogin));
