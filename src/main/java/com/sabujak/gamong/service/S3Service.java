@@ -76,7 +76,7 @@ public class S3Service {
                 presignedUrl.toString(),
                 cdnUrl,
                 key
-                );
+        );
     }
 
     private URL generatePresignedPutUrl(String key, String mimeType) {
