@@ -46,6 +46,11 @@ dependencies {
 
 	// WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// AWS SDK
+	implementation 'software.amazon.awssdk:s3:2.31.35'
+
+	implementation 'software.amazon.awssdk:apache-client:2.31.35'
 }
 
 tasks.named('test') {
