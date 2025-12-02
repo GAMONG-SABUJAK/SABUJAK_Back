@@ -43,19 +43,6 @@ public class BookmarkService {
 
     // 내 즐겨찾기 리스트 보기
     public List<ItemTradeRes> getMyBookmarkList(User user) {
-        return bookmarkRepository.findByUser(user).stream()
-                .map(Bookmark::getItemTrade)
-                .map(itemTrade -> new ItemTradeRes(
-                        itemTrade.getId(),
-                        itemTrade.getHashTag(),
-                        itemTrade.getItemName(),
-                        itemTrade.getTitle(),
-                        itemTrade.getDescription(),
-                        itemTrade.getPrice(),
-                        itemTrade.getUser().getBusinessAddress(),
-                        itemTrade.getChatRoomList().size(),
-                        itemTrade.getBookmarkList().size()
-                ))
-                .toList();
+        return bookmarkRepository.findBookmarkedItemTradesByUser(user);
     }
 }
