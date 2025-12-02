@@ -40,7 +40,7 @@ public class JoinItemTradeImage {
 
     private Boolean isUpdate; // 파일 수정 여부 // true or false
 
-    public JoinItemTradeImage(ItemTrade itemTrade, String fileName, AllowedFileType fileType, Long fileSize, String fileUrl, String fileKey, Boolean isUpdate) {
+    public JoinItemTradeImage(ItemTrade itemTrade, String fileName, AllowedFileType fileType, Long fileSize, String fileUrl, String fileKey) {
         this.itemTrade = itemTrade;
         this.fileName = fileName;
         this.fileType = fileType;
@@ -48,6 +48,6 @@ public class JoinItemTradeImage {
         this.fileUrl = fileUrl;
         this.fileKey = fileKey;
         this.createDate = LocalDateTime.now();
-        this.isUpdate = isUpdate;
+        this.isUpdate = false;
     }
 }

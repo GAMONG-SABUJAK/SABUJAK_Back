@@ -1,6 +1,7 @@
 package com.sabujak.gamong.service;
 
 import com.sabujak.gamong.domain.ItemTrade;
+import com.sabujak.gamong.domain.JoinItemTradeImage;
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.FileDTO;
 import com.sabujak.gamong.dto.Request.ReqAddress;
@@ -12,6 +13,7 @@ import com.sabujak.gamong.exception.InvalidUserException;
 import com.sabujak.gamong.repository.BookmarkRepository;
 import com.sabujak.gamong.repository.ChatRoomRepository;
 import com.sabujak.gamong.repository.ItemTradeRepository;
+import com.sabujak.gamong.repository.JoinItemTradeImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +27,11 @@ import java.util.Objects;
 public class ItemTradeService {
 
     private final ItemTradeRepository itemTradeRepository;
+    private final JoinItemTradeImageService joinItemTradeImageService;
+    private final JoinItemTradeImageRepository joinItemTradeImageRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final S3Service s3Service;
 
     // 재고 거래 글 생성
     @Transactional
@@ -41,6 +46,7 @@ public class ItemTradeService {
         );
 
         itemTradeRepository.save(itemTrade);
+        joinItemTradeImageService.createJoinItemTradeImage(itemTrade, reqItemTrade.itemImage());
     }
 
     // 재고 거래 글 삭제
@@ -51,6 +57,17 @@ public class ItemTradeService {
 
         if (!Objects.equals(user.getId(), itemTrade.getUser().getId()))
             throw new InvalidUserException();
+
+        // 연관된 S3 파일 키 목록 조회
+        List<String> fileKeyList = joinItemTradeImageRepository.findByItemTrade(itemTrade).stream()
+                .map(JoinItemTradeImage::getFileKey)
+                .filter(key -> key != null && !key.isBlank())
+                .toList();
+
+        // S3에서 파일 삭제
+        if (!fileKeyList.isEmpty()) {
+            s3Service.deleteFiles(fileKeyList);
+        }
 
         itemTradeRepository.delete(itemTrade);
     }
