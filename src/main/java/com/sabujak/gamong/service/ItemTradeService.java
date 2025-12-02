@@ -74,20 +74,7 @@ public class ItemTradeService {
 
     // 재고 거래 글 위치별 조회
     public ItemTradeByAddressRes getItemTradeByAddress(String address) {
-        List<ItemTradeRes> itemTradeResList = itemTradeRepository.findByUser_BusinessAddress(address)
-                .stream()
-                .map(itemTrade -> new ItemTradeRes(
-                        itemTrade.getId(),
-                        itemTrade.getHashTag(),
-                        itemTrade.getItemName(),
-                        itemTrade.getTitle(),
-                        itemTrade.getDescription(),
-                        itemTrade.getPrice(),
-                        itemTrade.getUser().getBusinessAddress(),
-                        itemTrade.getChatRoomList().size(),
-                        itemTrade.getBookmarkList().size()
-                ))
-                .toList();
+        List<ItemTradeRes> itemTradeResList = itemTradeRepository.findItemTradeResByUserBusinessAddress(address);
 
         return new ItemTradeByAddressRes(address, itemTradeResList);
     }
