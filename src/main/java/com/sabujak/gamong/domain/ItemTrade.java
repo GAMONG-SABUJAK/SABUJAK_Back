@@ -30,6 +30,9 @@ public class ItemTrade {
     @OneToMany(mappedBy = "itemTrade", fetch = FetchType.LAZY)
     private List<Bookmark> bookmarkList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "itemTrade", fetch = FetchType.LAZY)
+    private List<JoinItemTradeImage> joinItemTradeImageList = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private HashTag hashTag; // FREE or WANTED or FOR_SALE
 

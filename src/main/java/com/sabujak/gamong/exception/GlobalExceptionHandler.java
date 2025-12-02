@@ -40,6 +40,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 있는 채팅방입니다.");
     }
 
+    @ExceptionHandler(InvalidChatRoomIdException.class)
+    public ResponseEntity<String> invalidChatRoomId(InvalidChatRoomIdException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 ChatRoomId");
+    }
+
     // Jwt
     @ExceptionHandler(HandleJwtException.class)
     public ResponseEntity<String> handleJwt(HandleJwtException e) {

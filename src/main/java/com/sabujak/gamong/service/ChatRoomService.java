@@ -8,13 +8,16 @@ import com.sabujak.gamong.dto.FileDTO;
 import com.sabujak.gamong.dto.Request.ReqItemTradeId;
 import com.sabujak.gamong.dto.Response.ChatRoomRes;
 import com.sabujak.gamong.exception.AlreadyExistChatRoomException;
+import com.sabujak.gamong.exception.InvalidChatRoomIdException;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
+import com.sabujak.gamong.exception.InvalidUserException;
 import com.sabujak.gamong.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,7 +45,7 @@ public class ChatRoomService {
         chatRoomRepository.save(chatRoom);
     }
 
-    // 재고 거래 글 채팅방 조회
+    // 내 재고 거래 글 채팅방 리스트 조회
     public List<ChatRoomRes> getAllMyChatRoom(User user) {
         List<ChatRoom> chatRoomList = chatRoomRepository.findByReceiverUser(user);
 

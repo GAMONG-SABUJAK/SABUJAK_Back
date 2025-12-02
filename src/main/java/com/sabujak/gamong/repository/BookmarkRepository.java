@@ -21,12 +21,19 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     @Query("""
         SELECT new com.sabujak.gamong.dto.Response.ItemTradeRes(
             i.id,
+            new com.sabujak.gamong.dto.FileDTO(
+                                f.fileName,
+                                f.fileType,
+                                f.fileSize,
+                                f.fileUrl,
+                                f.fileKey
+                            ),
             i.hashTag,
             i.itemName,
             i.title,
             i.description,
             i.price,
-            u.address,
+            u.businessAddress,
             COUNT(DISTINCT c.id),
             COUNT(DISTINCT b2.id)
         )
@@ -35,6 +42,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
         JOIN i.user u
         LEFT JOIN i.chatRoomList c
         LEFT JOIN i.bookmarkList b2
+        LEFT JOIN i.joinItemTradeImageList f
         WHERE b.user = :user
         GROUP BY i.id, i.hashTag, i.itemName, i.title, i.description, i.price, u.businessAddress
     """)
