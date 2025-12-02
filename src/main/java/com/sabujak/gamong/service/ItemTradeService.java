@@ -30,7 +30,7 @@ public class ItemTradeService {
 
     // 재고 거래 글 생성
     @Transactional
-    public void createItemTrade(User user , ReqItemTrade reqItemTrade) {
+    public void createItemTrade(User user, ReqItemTrade reqItemTrade) {
         ItemTrade itemTrade = new ItemTrade(
                 user,
                 reqItemTrade.hashTag(),
