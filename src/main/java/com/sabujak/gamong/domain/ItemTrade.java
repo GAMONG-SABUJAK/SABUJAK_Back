@@ -8,6 +8,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -21,6 +23,12 @@ public class ItemTrade {
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user; // 글 올린 유저
+
+    @OneToMany(mappedBy = "itemTrade", fetch = FetchType.LAZY)
+    private List<ChatRoom> chatRoomList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "itemTrade", fetch = FetchType.LAZY)
+    private List<Bookmark> bookmarkList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private HashTag hashTag; // FREE or WANTED or FOR_SALE

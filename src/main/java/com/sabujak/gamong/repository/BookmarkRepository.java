@@ -5,10 +5,13 @@ import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     Optional<Bookmark> findByUserAndItemTrade(User user, ItemTrade itemTrade);
 
     long countBookmarkByItemTradeId(Long itemTradeId);
+
+    List<Bookmark> findByUser(User user);
 }

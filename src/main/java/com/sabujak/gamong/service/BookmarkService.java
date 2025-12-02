@@ -4,12 +4,16 @@ import com.sabujak.gamong.domain.Bookmark;
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.Request.ReqItemTradeId;
+import com.sabujak.gamong.dto.Response.ItemTradeRes;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.repository.BookmarkRepository;
+import com.sabujak.gamong.repository.ChatRoomRepository;
 import com.sabujak.gamong.repository.ItemTradeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +22,7 @@ public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
     private final ItemTradeRepository itemTradeRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     // 재고 거래 글 즐겨찾기 토글
     @Transactional
@@ -34,5 +39,23 @@ public class BookmarkService {
                     bookmarkRepository.save(new Bookmark(user, itemTrade));
                     return "눌렀습니다";
                 });
+    }
+
+    // 내 즐겨찾기 리스트 보기
+    public List<ItemTradeRes> getMyBookmarkList(User user) {
+        return bookmarkRepository.findByUser(user).stream()
+                .map(Bookmark::getItemTrade)
+                .map(itemTrade -> new ItemTradeRes(
+                        itemTrade.getId(),
+                        itemTrade.getHashTag(),
+                        itemTrade.getItemName(),
+                        itemTrade.getTitle(),
+                        itemTrade.getDescription(),
+                        itemTrade.getPrice(),
+                        itemTrade.getUser().getBusinessAddress(),
+                        itemTrade.getChatRoomList().size(),
+                        itemTrade.getBookmarkList().size()
+                ))
+                .toList();
     }
 }
