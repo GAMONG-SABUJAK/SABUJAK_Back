@@ -1,7 +1,7 @@
 package com.sabujak.gamong.dto.Response;
 
 public record PresignedUrlRes(
-        String uploadUrl,
+        String presignedUrl,
         String cdnUrl,
         String key
 ) {
