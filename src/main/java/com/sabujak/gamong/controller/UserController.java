@@ -4,6 +4,7 @@ import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
 import com.sabujak.gamong.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<JwtRes> signUp(@RequestBody ReqLogin reqLogin) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.login(reqLogin));
+    public ResponseEntity<JwtRes> signUp(HttpServletResponse response, @RequestBody ReqLogin reqLogin) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(response, reqLogin));
     }
 
 }

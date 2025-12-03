@@ -33,12 +33,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String jwt = resolveJwt(request);
+        String accessJwt = resolveAcccessJwt(request);
 
-        if (jwt != null) {
+        if (accessJwt != null) {
             try {
-                if (jwtUtility.validateJwt(jwt)) {
-                    Authentication auth = getAuthentication(jwt);
+                if (jwtUtility.validateJwt(accessJwt)) {
+                    Authentication auth = getAuthentication(accessJwt);
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             } catch (HandleJwtException | JwtException e) {
@@ -49,18 +49,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String resolveJwt(HttpServletRequest request) {
-        String authorizationHeader  = request.getHeader("Authorization");
+    private String resolveAcccessJwt(HttpServletRequest request) {
+        String accessJwt  = request.getHeader("Authorization");
 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+        if (accessJwt == null || !accessJwt.startsWith("Bearer ")) {
             return null;
         }
 
-        return authorizationHeader.substring(7);
+        return accessJwt.substring(7);
     }
 
     private Authentication getAuthentication(String jwt) {
-        Claims claims = jwtUtility.getClaimsFromJwt(jwt);
+        Claims claims = jwtUtility.getClaimsFromAccessJwt(jwt);
 
         User user = userRepository.findById(Long.valueOf(claims.getSubject()))
                 .orElseThrow(InvalidLoginIdException::new);
