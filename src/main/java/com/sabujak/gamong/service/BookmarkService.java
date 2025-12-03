@@ -3,7 +3,6 @@ package com.sabujak.gamong.service;
 import com.sabujak.gamong.domain.Bookmark;
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
-import com.sabujak.gamong.dto.Request.ReqItemTradeId;
 import com.sabujak.gamong.dto.Response.ItemTradeRes;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.repository.BookmarkRepository;

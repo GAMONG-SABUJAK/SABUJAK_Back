@@ -1,5 +1,6 @@
-package com.sabujak.gamong.security;
+package com.sabujak.gamong.config.security;
 
+import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.exception.HandleJwtException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -25,11 +26,11 @@ public class JwtUtility {
     }
 
     // JWT 토큰 생성
-    public String generateJwt(String userId) {
+    public String generateJwt(User user) {
         Instant now = Instant.now();
         return Jwts.builder() // JWT 빌더 초기화
                 .claims() // Claims 설정
-                .subject(userId) // 이메일을 JWT 토큰의 주체로 설정
+                .subject(String.valueOf(user.getId())) // 이메일을 JWT 토큰의 주체로 설정
                 .issuedAt(Date.from(now)) // JWT 발행 시간 설정
                 .expiration(Date.from(now.plusMillis(expirationTime))) // JWT 만료 시간 설정
                 .and() // claims() 닫기
@@ -46,7 +47,7 @@ public class JwtUtility {
                     .parseSignedClaims(jwt); // 주어진 JWT 토큰 파싱하여 서명을 검증
             return true; // 올바르면 true 반환
         } catch (ExpiredJwtException e) {
-            throw e;
+            throw new HandleJwtException("만료된 JWT 형식");
         } catch (UnsupportedJwtException e) {
             throw new HandleJwtException("지원되지 않는 JWT 형식");
         } catch (MalformedJwtException e) {

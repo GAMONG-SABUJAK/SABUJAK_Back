@@ -5,20 +5,15 @@ import com.sabujak.gamong.domain.ChatRoom;
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.FileDTO;
-import com.sabujak.gamong.dto.Request.ReqItemTradeId;
 import com.sabujak.gamong.dto.Response.ChatRoomRes;
 import com.sabujak.gamong.exception.AlreadyExistChatRoomException;
-import com.sabujak.gamong.exception.InvalidChatRoomIdException;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
-import com.sabujak.gamong.exception.InvalidUserException;
 import com.sabujak.gamong.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

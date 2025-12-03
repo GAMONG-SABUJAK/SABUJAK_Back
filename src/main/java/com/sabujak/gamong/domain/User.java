@@ -1,8 +1,7 @@
 package com.sabujak.gamong.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.sabujak.gamong.enums.Role;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -43,6 +43,9 @@ public class User implements UserDetails {
 
     private LocalDateTime createAt; // 생성 시점
 
+    @Enumerated(EnumType.STRING)
+    private Role role; // 권한
+
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
@@ -57,6 +60,7 @@ public class User implements UserDetails {
         this.businessItem = businessItem;
         this.businessAddress = businessAddress;
         this.createAt = LocalDateTime.now();
+        this.role = Role.ROLE_USER;
     }
 
     public void setPassword(String password) {
@@ -74,7 +78,7 @@ public class User implements UserDetails {
     // UserDetails 필수 impl
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

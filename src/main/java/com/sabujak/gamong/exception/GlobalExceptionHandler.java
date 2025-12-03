@@ -16,12 +16,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidLoginIdException.class)
     public ResponseEntity<String> invalidLoginId(InvalidLoginIdException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 LoginId");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("올바르지 않은 LoginId");
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<String> invalidPassword(InvalidPasswordException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 password");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("올바르지 않은password");
     }
 
     @ExceptionHandler(InvalidUserException.class)
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     // ItemTrade
     @ExceptionHandler(InvalidItemTradeIdException.class)
     public ResponseEntity<String> invalidItemTradeId(InvalidItemTradeIdException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("없는 ItemTradeId");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("올바르지 않은 ItemTradeId");
     }
 
     @ExceptionHandler(AlreadyExistChatRoomException.class)
@@ -42,13 +42,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidChatRoomIdException.class)
     public ResponseEntity<String> invalidChatRoomId(InvalidChatRoomIdException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일치하지 않는 ChatRoomId");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("올바르지 않은 ChatRoomId");
     }
 
     // Jwt
     @ExceptionHandler(HandleJwtException.class)
     public ResponseEntity<String> handleJwt(HandleJwtException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidJwtSubjectException.class)
+    public ResponseEntity<String> invalidJwtSubject(InvalidJwtSubjectException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("올바르지 않은 JwtSubject");
     }
 
     @ExceptionHandler(S3PresignedException.class)

@@ -1,7 +1,6 @@
 package com.sabujak.gamong.dto.Response;
 
 import com.sabujak.gamong.dto.FileDTO;
-import com.sabujak.gamong.enums.AllowedFileType;
 
 import java.time.LocalDateTime;
 
