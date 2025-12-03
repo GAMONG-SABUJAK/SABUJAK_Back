@@ -9,14 +9,19 @@ import com.sabujak.gamong.exception.InvalidLoginIdException;
 import com.sabujak.gamong.exception.InvalidPasswordException;
 import com.sabujak.gamong.repository.UserRepository;
 import com.sabujak.gamong.config.security.JwtUtility;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -27,6 +32,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtUtility jwtUtility;
     private final RedisTemplate<String, String> redisTemplate;
+
+    @Value("${cookie.secure}")
+    private boolean isSecure;
+
+    @Value("${cookie.sameSite}")
+    private String isSameSite;
 
     // 회원가입
     @Transactional
@@ -61,20 +72,43 @@ public class UserService {
 
         String refreshJwt = jwtUtility.generateRefreshToken(user);
 
-        // Redis에 저장
-        redisTemplate.opsForValue().set(refreshJwt, user.getId().toString(), 30, TimeUnit.DAYS);
+        String redisKey = "refresh_jwt:" + refreshJwt;
 
-        // HttpOnly 쿠키로 클라이언트에 전달
-        ResponseCookie refreshCookie = ResponseCookie.from("refreshJwt", refreshJwt)
+        redisTemplate.opsForValue().set(redisKey, refreshJwt, 30, TimeUnit.DAYS);
+
+        ResponseCookie refreshCookie = ResponseCookie.from("refresh_jwt", refreshJwt)
                 .httpOnly(true)
-                .secure(true)
+                .secure(isSecure)
+                .sameSite(isSameSite)
                 .path("/")
-                .maxAge(30 * 24 * 60 * 60)
-                .sameSite("Strict")
+                .maxAge(Duration.ofDays(30))
                 .build();
 
         response.setHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
         return new JwtRes(accessJwt);
+    }
+
+    // 로그아웃
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String refreshJwt = jwtUtility.extractTokenFromCookies(request, "refresh_jwt");
+
+        if (refreshJwt != null) {
+            redisTemplate.delete("refresh_jwt:" + refreshJwt);
+        }
+
+        ResponseCookie deleteRefreshJwtCookie = ResponseCookie.from("refresh_jwt", "")
+                .httpOnly(true)
+                .secure(isSecure)
+                .sameSite(isSameSite)
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        response.setHeader(HttpHeaders.SET_COOKIE, deleteRefreshJwtCookie.toString());
+
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
     }
 }
