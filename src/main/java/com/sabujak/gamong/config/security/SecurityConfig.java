@@ -29,11 +29,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(withDefaults()) // cors 등록
-                .httpBasic(AbstractHttpConfigurer::disable) // Spring Security의 기본 인증 방식인 Basic Authentication을 비활성화
-                .csrf(AbstractHttpConfigurer::disable) // JWT는 CSRF 공격에 취약하지 않아 CSRF 보호 비활성화 // 보통 CSRF 보호는 세션 기반 인증을 위해 사용
-                .formLogin(AbstractHttpConfigurer::disable) //  Spring Security의 기본 폼 로그인 기능을 비활성화
-                // JWT를 사용하기 때문에 세션을 사용하지 않도록 STATELESS로 설정
+                .cors(withDefaults())
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/**").permitAll()

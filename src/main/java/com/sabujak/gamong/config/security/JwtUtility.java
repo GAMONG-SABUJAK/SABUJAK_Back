@@ -18,7 +18,8 @@ public class JwtUtility {
 
     private final SecretKey secretKey; // JWT 서명에 사용되는 비밀 키 // 생성한 비밀 키의 타입이 SecretKey 타입
 
-    private static final long expirationTime = 1000 * 60 * 60; // 밀리초 단위 // JWT 만료 시간: 1시간
+    private static final long accessJwtExpirationTime = 1000L * 60 * 60; // 밀리초 단위 // JWT 만료 시간: 1시간
+    private static final long refreshJwtExpirationTime = 1000L * 60 * 60 * 24 * 30; // 밀리초 단위 // JWT 만료 시간: 1시간
 
     // JWT 서명에 사용되는 비밀 키 생성
     public JwtUtility(@Value("${jwt.base64Secret}") String base64Secret) { // @Value을 통해 application.yml에서 값 주입
@@ -26,25 +27,25 @@ public class JwtUtility {
     }
 
     // JWT 토큰 생성
-    public String generateJwt(User user) {
+    public String generateAccessJwt(User user) {
         Instant now = Instant.now();
         return Jwts.builder() // JWT 빌더 초기화
                 .claims() // Claims 설정
                 .subject(String.valueOf(user.getId())) // 이메일을 JWT 토큰의 주체로 설정
                 .issuedAt(Date.from(now)) // JWT 발행 시간 설정
-                .expiration(Date.from(now.plusMillis(expirationTime))) // JWT 만료 시간 설정
+                .expiration(Date.from(now.plusMillis(accessJwtExpirationTime))) // JWT 만료 시간 설정
                 .and() // claims() 닫기
                 .signWith(secretKey) // 지정된 알고리즘과 비밀키를 사용하여 JWT 토큰 서명
                 .compact(); // JWT 문자열 생성
     }
 
     // JWT 토큰 유효성 검사
-    public boolean validateJwt(String jwt) {
+    public boolean validateJwt(String accessJwt) {
         try {
             Jwts.parser()
                     .verifyWith(secretKey)
                     .build()
-                    .parseSignedClaims(jwt); // 주어진 JWT 토큰 파싱하여 서명을 검증
+                    .parseSignedClaims(accessJwt); // 주어진 JWT 토큰 파싱하여 서명을 검증
             return true; // 올바르면 true 반환
         } catch (ExpiredJwtException e) {
             throw new HandleJwtException("만료된 JWT 형식");
@@ -62,12 +63,24 @@ public class JwtUtility {
     }
 
     // JWT 토큰에서 클레임을 추출하여 반환
-    public Claims getClaimsFromJwt(String jwt) {
+    public Claims getClaimsFromAccessJwt(String accessJwt) {
         return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
-                .parseSignedClaims(jwt)
+                .parseSignedClaims(accessJwt)
                 .getPayload();  // JWT의 페이로드에서 클레임 반환
+    }
+
+    public String generateRefreshToken(User user) {
+        Instant now = Instant.now();
+        return Jwts.builder() // JWT 빌더 초기화
+                .claims() // Claims 설정
+                .subject(String.valueOf(user.getId())) // 이메일을 JWT 토큰의 주체로 설정
+                .issuedAt(Date.from(now)) // JWT 발행 시간 설정
+                .expiration(Date.from(now.plusMillis(refreshJwtExpirationTime))) // JWT 만료 시간 설정
+                .and() // claims() 닫기
+                .signWith(secretKey) // 지정된 알고리즘과 비밀키를 사용하여 JWT 토큰 서명
+                .compact(); // JWT 문자열 생성
     }
 
     public String extractTokenFromCookies(HttpServletRequest request) {
@@ -84,6 +97,6 @@ public class JwtUtility {
 
     public Claims getClaimsFromCookies(HttpServletRequest request) {
         String jwt = extractTokenFromCookies(request);
-        return getClaimsFromJwt(jwt);
+        return getClaimsFromAccessJwt(jwt);
     }
 }
