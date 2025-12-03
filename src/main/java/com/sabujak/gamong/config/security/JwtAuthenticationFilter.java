@@ -59,8 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return accessJwt.substring(7);
     }
 
-    private Authentication getAuthentication(String jwt) {
-        Claims claims = jwtUtility.getClaimsFromAccessJwt(jwt);
+    private Authentication getAuthentication(String accessJwt) {
+        Claims claims = jwtUtility.getClaimsFromAccessJwt(accessJwt);
 
         User user = userRepository.findById(Long.valueOf(claims.getSubject()))
                 .orElseThrow(InvalidLoginIdException::new);

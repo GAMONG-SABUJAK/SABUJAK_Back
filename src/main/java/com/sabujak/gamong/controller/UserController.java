@@ -40,4 +40,11 @@ public class UserController {
         userService.logout(request, response);
         return ResponseEntity.status(HttpStatus.OK).body("로그아웃 성공");
     }
+
+    // refreshJwt 재발급
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtRes> reissuedRefreshJwt(HttpServletRequest request) {
+        JwtRes newAccessToken = userService.reissuedRefreshJwt(request);
+        return ResponseEntity.status(HttpStatus.OK).body(newAccessToken);
+    }
 }

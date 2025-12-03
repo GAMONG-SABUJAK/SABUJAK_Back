@@ -95,8 +95,8 @@ public class JwtUtility {
         return null; // 토큰 없으면 null 반환
     }
 
-    public Claims getClaimsFromCookies(HttpServletRequest request) {
-        String jwt = extractTokenFromCookies(request);
+    public Claims getClaimsFromCookies(HttpServletRequest request, String cookieName) {
+        String jwt = extractTokenFromCookies(request, cookieName);
         return getClaimsFromAccessJwt(jwt);
     }
 }
