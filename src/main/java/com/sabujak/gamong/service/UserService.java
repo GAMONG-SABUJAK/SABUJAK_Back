@@ -5,13 +5,14 @@ import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
 import com.sabujak.gamong.exception.AlreadyLoginIdException;
+import com.sabujak.gamong.exception.HandleJwtException;
 import com.sabujak.gamong.exception.InvalidLoginIdException;
 import com.sabujak.gamong.exception.InvalidPasswordException;
 import com.sabujak.gamong.repository.UserRepository;
 import com.sabujak.gamong.config.security.JwtUtility;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -111,4 +111,37 @@ public class UserService {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
     }
+
+    // refreshJwt 재발급
+    @Transactional
+    public JwtRes reissuedRefreshJwt(HttpServletRequest request) {
+
+        String refreshJwt = jwtUtility.extractTokenFromCookies(request, "refresh_jwt");
+
+        if (refreshJwt == null) {
+            throw new HandleJwtException("Refresh Token 없음");
+        }
+
+        String redisKey = "refresh_jwt:" + refreshJwt;
+
+        String redisRefreshJwt = redisTemplate.opsForValue().get(redisKey);
+
+        if (redisRefreshJwt == null || !redisRefreshJwt.equals(refreshJwt)) {
+            throw new HandleJwtException("유효하지 않은 Refresh Token");
+        }
+
+        jwtUtility.validateJwt(refreshJwt);
+
+        Claims claims = jwtUtility.getClaimsFromAccessJwt(refreshJwt);
+
+        Long userId = Long.valueOf(claims.getSubject());
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(InvalidLoginIdException::new);
+
+        String newAccessJwt = jwtUtility.generateAccessJwt(user);
+
+        return new JwtRes(newAccessJwt);
+    }
+
 }
