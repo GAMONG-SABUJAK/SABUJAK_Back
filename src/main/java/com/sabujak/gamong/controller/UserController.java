@@ -4,6 +4,7 @@ import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
 import com.sabujak.gamong.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,4 +34,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.login(response, reqLogin));
     }
 
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+        userService.logout(request, response);
+        return ResponseEntity.status(HttpStatus.OK).body("로그아웃 성공");
+    }
 }

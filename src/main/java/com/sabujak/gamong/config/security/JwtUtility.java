@@ -83,11 +83,11 @@ public class JwtUtility {
                 .compact(); // JWT 문자열 생성
     }
 
-    public String extractTokenFromCookies(HttpServletRequest request) {
+    public String extractTokenFromCookies(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("access_token".equals(cookie.getName())) {
+                if (cookieName.equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }
