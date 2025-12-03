@@ -5,10 +5,10 @@ import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
 import com.sabujak.gamong.exception.AlreadyLoginIdException;
-import com.sabujak.gamong.exception.InvalidPasswordException;
 import com.sabujak.gamong.exception.InvalidLoginIdException;
+import com.sabujak.gamong.exception.InvalidPasswordException;
 import com.sabujak.gamong.repository.UserRepository;
-import com.sabujak.gamong.security.JwtUtility;
+import com.sabujak.gamong.config.security.JwtUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +50,6 @@ public class UserService {
         if (!user.checkPassword(reqLogin.password()))
             throw new InvalidPasswordException();
 
-        return new JwtRes(jwtUtility.generateJwt(user.getLoginId()));
+        return new JwtRes(jwtUtility.generateJwt(user);
     }
 }

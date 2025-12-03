@@ -4,7 +4,6 @@ import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.JoinItemTradeImage;
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.dto.FileDTO;
-import com.sabujak.gamong.dto.Request.ReqAddress;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
 import com.sabujak.gamong.dto.Response.ItemTradeByAddressRes;
 import com.sabujak.gamong.dto.Response.ItemTradeRes;

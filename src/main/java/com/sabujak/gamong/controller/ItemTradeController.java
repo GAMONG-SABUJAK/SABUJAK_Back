@@ -1,7 +1,6 @@
 package com.sabujak.gamong.controller;
 
 import com.sabujak.gamong.domain.User;
-import com.sabujak.gamong.dto.Request.ReqAddress;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
 import com.sabujak.gamong.dto.Response.ItemTradeByAddressRes;
 import com.sabujak.gamong.dto.Response.ItemTradeRes;

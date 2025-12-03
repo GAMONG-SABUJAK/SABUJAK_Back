@@ -1,7 +1,6 @@
 package com.sabujak.gamong.controller;
 
 import com.sabujak.gamong.domain.User;
-import com.sabujak.gamong.dto.Request.ReqItemTradeId;
 import com.sabujak.gamong.dto.Response.ChatRoomRes;
 import com.sabujak.gamong.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
