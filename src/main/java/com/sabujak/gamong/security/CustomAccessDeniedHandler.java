@@ -1,4 +1,4 @@
-package com.sabujak.gamong.config.security;
+package com.sabujak.gamong.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
