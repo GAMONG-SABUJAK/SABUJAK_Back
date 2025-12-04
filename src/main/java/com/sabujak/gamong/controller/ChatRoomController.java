@@ -1,6 +1,8 @@
 package com.sabujak.gamong.controller;
 
 import com.sabujak.gamong.domain.User;
+import com.sabujak.gamong.dto.Request.ReqChatRoomDetail;
+import com.sabujak.gamong.dto.Response.ChatRoomDetailRes;
 import com.sabujak.gamong.dto.Response.ChatRoomRes;
 import com.sabujak.gamong.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +31,11 @@ public class ChatRoomController {
     @GetMapping("/all-my")
     public ResponseEntity<List<ChatRoomRes>> getAllMyChatRoom(@AuthenticationPrincipal User user) {
         return ResponseEntity.status(HttpStatus.OK).body(chatRoomService.getAllMyChatRoom(user));
+    }
+
+    // 재고 거래 채팅방 개별 조회 + 최근 메시지 + 읽음 처리
+    @PostMapping("/detail")
+    public ResponseEntity<ChatRoomDetailRes> getChatRoomDetail(@RequestBody ReqChatRoomDetail reqChatRoomDetail) {
+        return ResponseEntity.status(HttpStatus.OK).body(chatRoomService.getChatRoomDetail(reqChatRoomDetail));
     }
 }
