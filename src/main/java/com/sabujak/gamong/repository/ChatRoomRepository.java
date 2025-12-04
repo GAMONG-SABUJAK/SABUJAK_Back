@@ -14,6 +14,4 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     long countChatRoomByItemTradeId(Long itemTradeId);
 
     Optional<ChatRoom> findByItemTradeIdAndSenderUser(Long itemTradeId, User senderUser);
-
-    List<ChatMessage> findByChatRoomIdOrderByCreateAtAsc(Long chatRoomId);
 }

@@ -10,7 +10,7 @@ public record ItemTradeRes(
         String itemName,
         String title,
         String description,
-        String price,
+        Long price,
         String userAddress,
         long chatRoomCnt,
         long bookmarkCnt

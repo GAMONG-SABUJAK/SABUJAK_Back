@@ -143,8 +143,8 @@ public class ChatRoomService {
                 senderUserId,
                 senderNickname,
                 receiverUserId,
-                messageResList,
-                unreadCount
+                unreadCount,
+                messageResList
         );
     }
 }
