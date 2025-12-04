@@ -8,14 +8,14 @@ public record ChatRoomDetailRes(
         String itemName,
         String itemImageUrl,
         String title,
-        String price,
+        Long price,
 
         Long senderUserId,
         String senderNickname,
 
         Long receiverUserId,
 
-        List<ChatMessageRes> messageList,
-        Long unreadCount
+        Long unreadCount,
+        List<ChatMessageRes> messageList
 ) {}
 
