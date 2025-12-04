@@ -1,4 +1,4 @@
-package com.sabujak.gamong.config.security;
+package com.sabujak.gamong.security;
 
 import com.sabujak.gamong.domain.User;
 import com.sabujak.gamong.exception.HandleJwtException;

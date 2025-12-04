@@ -9,7 +9,7 @@ import com.sabujak.gamong.exception.HandleJwtException;
 import com.sabujak.gamong.exception.InvalidLoginIdException;
 import com.sabujak.gamong.exception.InvalidPasswordException;
 import com.sabujak.gamong.repository.UserRepository;
-import com.sabujak.gamong.config.security.JwtUtility;
+import com.sabujak.gamong.security.JwtUtility;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
