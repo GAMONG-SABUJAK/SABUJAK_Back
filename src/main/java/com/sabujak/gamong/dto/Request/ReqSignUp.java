@@ -9,6 +9,8 @@ public record ReqSignUp(
         String businessName,
         String businessType,
         String businessItem,
-        String businessAddress
+        String businessAddress,
+        Double latitude,
+        Double longitude
 ) {
 }

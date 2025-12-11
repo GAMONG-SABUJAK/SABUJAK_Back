@@ -41,6 +41,10 @@ public class User implements UserDetails {
 
     private String businessAddress; // 사업장주소
 
+    private Double latitude; // 위도
+
+    private Double longitude; // 경도
+
     private LocalDateTime createAt; // 생성 시점
 
     @Enumerated(EnumType.STRING)
@@ -49,7 +53,7 @@ public class User implements UserDetails {
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    public User(String loginId, String password, String nickname, String ceoName, long businessNum, String businessName, String businessType, String businessItem, String businessAddress) {
+    public User(String loginId, String password, String nickname, String ceoName, long businessNum, String businessName, String businessType, String businessItem, String businessAddress, Double latitude, Double longitude) {
         this.loginId = loginId;
         this.setPassword(password);
         this.nickname = nickname;
@@ -59,6 +63,8 @@ public class User implements UserDetails {
         this.businessType = businessType;
         this.businessItem = businessItem;
         this.businessAddress = businessAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.createAt = LocalDateTime.now();
         this.role = Role.ROLE_USER;
     }

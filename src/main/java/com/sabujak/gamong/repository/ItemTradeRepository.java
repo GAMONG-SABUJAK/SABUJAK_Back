@@ -14,29 +14,25 @@ public interface ItemTradeRepository extends JpaRepository<ItemTrade, Long> {
     @Query("""
         SELECT new com.sabujak.gamong.dto.Response.ItemTradeRes(
             i.id,
-            new com.sabujak.gamong.dto.FileDTO(
-                                f.fileName,
-                                f.fileType,
-                                f.fileSize,
-                                f.fileUrl,
-                                f.fileKey
-                            ),
+            NULL,
             i.hashTag,
             i.itemName,
             i.title,
             i.description,
             i.price,
             u.businessAddress,
-            COUNT(DISTINCT c.id),
-            COUNT(DISTINCT b.id)
+            u.latitude,
+            u.longitude,
+            (SELECT COUNT(c.id) FROM i.chatRoomList c),
+            (SELECT COUNT(b.id) FROM i.bookmarkList b)
         )
         FROM ItemTrade i
         JOIN i.user u
-        LEFT JOIN i.chatRoomList c
-        LEFT JOIN i.bookmarkList b
-        LEFT JOIN i.joinItemTradeImageList f
-        WHERE u.businessAddress = :address
-        GROUP BY i.id, i.hashTag, i.itemName, i.title, i.description, i.price, u.businessAddress
+        WHERE (6371 * acos(
+            cos(radians(:lat)) * cos(radians(u.latitude)) * cos(radians(u.longitude) - radians(:lng)) +
+            sin(radians(:lat)) * sin(radians(u.latitude))
+        )) < 3
     """)
-    List<ItemTradeRes> findItemTradeResByUserBusinessAddress(@Param("address") String address);
+    List<ItemTradeRes> findItemTradeResByLocation(@Param("lat") double latitude, @Param("lng") double longitude);
+
 }

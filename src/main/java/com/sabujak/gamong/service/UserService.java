@@ -66,7 +66,9 @@ public class UserService {
                 reqSignUp.businessName(),
                 reqSignUp.businessType(),
                 reqSignUp.businessItem(),
-                reqSignUp.businessAddress()
+                reqSignUp.businessAddress(),
+                reqSignUp.latitude(),
+                reqSignUp.longitude()
         );
 
         userRepository.save(user);

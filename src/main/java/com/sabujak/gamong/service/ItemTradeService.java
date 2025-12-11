@@ -91,15 +91,42 @@ public class ItemTradeService {
                 itemTrade.getDescription(),
                 itemTrade.getPrice(),
                 itemTrade.getUser().getBusinessAddress(),
+                itemTrade.getUser().getLatitude(),
+                itemTrade.getUser().getLongitude(),
                 chatRoomRepository.countChatRoomByItemTradeId(itemTradeId),
                 bookmarkRepository.countBookmarkByItemTradeId(itemTradeId)
         );
     }
 
     // 재고 거래 글 위치별 조회
-    public ItemTradeByAddressRes getItemTradeByAddress(String address) {
-        List<ItemTradeRes> itemTradeResList = itemTradeRepository.findItemTradeResByUserBusinessAddress(address);
+    public ItemTradeByAddressRes getItemTradeByLocation(double latitude, double longitude) {
+        List<ItemTradeRes> itemTradeResList = itemTradeRepository.findItemTradeResByLocation(latitude, longitude);
 
-        return new ItemTradeByAddressRes(address, itemTradeResList);
+        itemTradeResList = itemTradeResList.stream().map(res -> {
+            FileDTO firstImage = getFirstImageByItemTradeId(res.itemTradeId());
+            return new ItemTradeRes(
+                    res.itemTradeId(),
+                    firstImage,
+                    res.hashTag(),
+                    res.itemName(),
+                    res.title(),
+                    res.description(),
+                    res.price(),
+                    res.userAddress(),
+                    res.latitude(),
+                    res.longitude(),
+                    res.chatRoomCnt(),
+                    res.bookmarkCnt()
+            );
+        }).toList();
+
+        return new ItemTradeByAddressRes("사용자 위치 기준", itemTradeResList);
+    }
+
+    // 첫 번째 이미지 가져오기
+    private FileDTO getFirstImageByItemTradeId(Long itemTradeId) {
+        return joinItemTradeImageRepository.findFirstByItemTradeIdOrderByIdAsc(itemTradeId)
+                .map(f -> new FileDTO(f.getFileName(), f.getFileType(), f.getFileSize(), f.getFileUrl(), f.getFileKey()))
+                .orElse(null);
     }
 }
