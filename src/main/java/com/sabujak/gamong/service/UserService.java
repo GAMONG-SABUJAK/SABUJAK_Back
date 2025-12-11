@@ -1,6 +1,7 @@
 package com.sabujak.gamong.service;
 
 import com.sabujak.gamong.domain.User;
+import com.sabujak.gamong.dto.Request.ReqBizStatus;
 import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
@@ -16,12 +17,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -38,6 +45,11 @@ public class UserService {
 
     @Value("${cookie.sameSite}")
     private String isSameSite;
+
+    @Value("${nts.business.service-key}")
+    private String businessServiceKey;
+
+    private final RestTemplate restTemplate = new RestTemplate();
 
     // 회원가입
     @Transactional
@@ -144,4 +156,23 @@ public class UserService {
         return new JwtRes(newAccessJwt);
     }
 
+    // 사업자등록번호 조회
+    public Object bizStatus(String bizNum) {
+
+        String url = "https://api.odcloud.kr/api/nts-businessman/v1/status"
+                + "?serviceKey=" + businessServiceKey
+                + "&returnType=JSON";
+
+        // 국세청은 배열 형태로 요청해야 함
+        Map<String, Object> body = new HashMap<>();
+        body.put("b_no", List.of(bizNum)); // 주의: [] 형태여야 API 정상 동작
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<?> entity = new HttpEntity<>(body, headers);
+
+        return restTemplate.postForObject(url, entity, Object.class);
+    }
 }
+
