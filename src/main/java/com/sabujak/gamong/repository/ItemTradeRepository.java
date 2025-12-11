@@ -28,11 +28,8 @@ public interface ItemTradeRepository extends JpaRepository<ItemTrade, Long> {
         )
         FROM ItemTrade i
         JOIN i.user u
-        WHERE (6371 * acos(
-            cos(radians(:lat)) * cos(radians(u.latitude)) * cos(radians(u.longitude) - radians(:lng)) +
-            sin(radians(:lat)) * sin(radians(u.latitude))
-        )) < 3
     """)
-    List<ItemTradeRes> findItemTradeResByLocation(@Param("lat") double latitude, @Param("lng") double longitude);
+    List<ItemTradeRes> findAllItemTradeRes();
+
 
 }

@@ -32,6 +32,8 @@ public class ItemTradeService {
     private final BookmarkRepository bookmarkRepository;
     private final S3Service s3Service;
 
+    private static final double EARTH_RADIUS_KM = 6371;
+
     // 재고 거래 글 생성
     @Transactional
     public void createItemTrade(User user, ReqItemTrade reqItemTrade) {
@@ -99,34 +101,49 @@ public class ItemTradeService {
     }
 
     // 재고 거래 글 위치별 조회
-    public ItemTradeByAddressRes getItemTradeByLocation(double latitude, double longitude) {
-        List<ItemTradeRes> itemTradeResList = itemTradeRepository.findItemTradeResByLocation(latitude, longitude);
+    public ItemTradeByAddressRes getItemTradeByLocation(double userLat, double userLng) {
+        List<ItemTradeRes> allTrades = itemTradeRepository.findAllItemTradeRes();
 
-        itemTradeResList = itemTradeResList.stream().map(res -> {
-            FileDTO firstImage = getFirstImageByItemTradeId(res.itemTradeId());
-            return new ItemTradeRes(
-                    res.itemTradeId(),
-                    firstImage,
-                    res.hashTag(),
-                    res.itemName(),
-                    res.title(),
-                    res.description(),
-                    res.price(),
-                    res.userAddress(),
-                    res.latitude(),
-                    res.longitude(),
-                    res.chatRoomCnt(),
-                    res.bookmarkCnt()
-            );
-        }).toList();
+        // 반경 3km 필터 + 첫 번째 이미지 매핑
+        List<ItemTradeRes> filtered = allTrades.stream()
+                .filter(trade -> distanceKm(userLat, userLng, trade.latitude(), trade.longitude()) < 3)
+                .map(trade -> {
+                    FileDTO firstImage = joinItemTradeImageRepository
+                            .findFirstByItemTradeIdOrderByIdAsc(trade.itemTradeId())
+                            .map(f -> new FileDTO(f.getFileName(), f.getFileType(), f.getFileSize(), f.getFileUrl(), f.getFileKey()))
+                            .orElse(null);
 
-        return new ItemTradeByAddressRes("사용자 위치 기준", itemTradeResList);
+                    return new ItemTradeRes(
+                            trade.itemTradeId(),
+                            firstImage,
+                            trade.hashTag(),
+                            trade.itemName(),
+                            trade.title(),
+                            trade.description(),
+                            trade.price(),
+                            trade.userAddress(),
+                            trade.latitude(),
+                            trade.longitude(),
+                            trade.chatRoomCnt(),
+                            trade.bookmarkCnt()
+                    );
+                })
+                .toList();
+
+        return new ItemTradeByAddressRes("사용자 위치 기준", filtered);
     }
 
-    // 첫 번째 이미지 가져오기
-    private FileDTO getFirstImageByItemTradeId(Long itemTradeId) {
-        return joinItemTradeImageRepository.findFirstByItemTradeIdOrderByIdAsc(itemTradeId)
-                .map(f -> new FileDTO(f.getFileName(), f.getFileType(), f.getFileSize(), f.getFileUrl(), f.getFileKey()))
-                .orElse(null);
+    // 두 좌표 간 거리 계산 (Haversine)
+    private double distanceKm(double lat1, double lng1, double lat2, double lng2) {
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) *
+                        Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return EARTH_RADIUS_KM * c;
     }
 }
