@@ -7,6 +7,7 @@ import com.sabujak.gamong.dto.FileDTO;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
 import com.sabujak.gamong.dto.Response.ItemTradeByAddressRes;
 import com.sabujak.gamong.dto.Response.ItemTradeRes;
+import com.sabujak.gamong.dto.Response.ItemTradeWithoutFileDtoRes;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.exception.InvalidUserException;
 import com.sabujak.gamong.repository.BookmarkRepository;
@@ -102,33 +103,32 @@ public class ItemTradeService {
 
     // 재고 거래 글 위치별 조회
     public ItemTradeByAddressRes getItemTradeByLocation(double userLat, double userLng) {
-        List<ItemTradeRes> allTrades = itemTradeRepository.findAllItemTradeRes();
-
         // 반경 3km 필터 + 첫 번째 이미지 매핑
-        List<ItemTradeRes> filtered = allTrades.stream()
-                .filter(trade -> distanceKm(userLat, userLng, trade.latitude(), trade.longitude()) < 3)
-                .map(trade -> {
+        List<ItemTradeRes> filtered = itemTradeRepository.findAll().stream()
+                .map(i -> {
                     FileDTO firstImage = joinItemTradeImageRepository
-                            .findFirstByItemTradeIdOrderByIdAsc(trade.itemTradeId())
+                            .findFirstByItemTradeIdOrderByIdAsc(i.getId())
                             .map(f -> new FileDTO(f.getFileName(), f.getFileType(), f.getFileSize(), f.getFileUrl(), f.getFileKey()))
                             .orElse(null);
 
                     return new ItemTradeRes(
-                            trade.itemTradeId(),
+                            i.getId(),
                             firstImage,
-                            trade.hashTag(),
-                            trade.itemName(),
-                            trade.title(),
-                            trade.description(),
-                            trade.price(),
-                            trade.userAddress(),
-                            trade.latitude(),
-                            trade.longitude(),
-                            trade.chatRoomCnt(),
-                            trade.bookmarkCnt()
+                            i.getHashTag(),
+                            i.getItemName(),
+                            i.getTitle(),
+                            i.getDescription(),
+                            i.getPrice(),
+                            i.getUser().getBusinessAddress(),
+                            i.getUser().getLatitude(),
+                            i.getUser().getLongitude(),
+                            i.getChatRoomList().size(),
+                            i.getBookmarkList().size()
                     );
                 })
+                .filter(trade -> distanceKm(userLat, userLng, trade.latitude(), trade.longitude()) < 3)
                 .toList();
+
 
         return new ItemTradeByAddressRes("사용자 위치 기준", filtered);
     }
