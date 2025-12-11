@@ -12,6 +12,8 @@ public record ItemTradeRes(
         String description,
         Long price,
         String userAddress,
+        Double latitude,
+        Double longitude,
         long chatRoomCnt,
         long bookmarkCnt
 ) {

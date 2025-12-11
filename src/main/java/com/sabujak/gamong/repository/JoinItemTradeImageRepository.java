@@ -11,4 +11,7 @@ public interface JoinItemTradeImageRepository extends JpaRepository<JoinItemTrad
     List<JoinItemTradeImage> findByItemTrade(ItemTrade itemTrade);
 
     Optional<JoinItemTradeImage> findTop1ByItemTradeOrderByIdAsc(ItemTrade itemTrade);
+
+    Optional<JoinItemTradeImage> findFirstByItemTradeIdOrderByIdAsc(Long itemTradeId);
+
 }
