@@ -39,7 +39,7 @@ public class ItemTradeController {
     }
 
     // 재고 거래 글 위치별 조회
-    @GetMapping("/item-trades/nearby")
+    @GetMapping("/nearby")
     public ResponseEntity<ItemTradeByAddressRes> getItemTradeByLocation(@RequestParam double lat, @RequestParam double lng) {
         return ResponseEntity.status(HttpStatus.OK).body(itemTradeService.getItemTradeByLocation(lat, lng));
     }
