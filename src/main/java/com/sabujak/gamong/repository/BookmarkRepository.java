@@ -19,32 +19,15 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     List<Bookmark> findByUser(User user);
 
     @Query("""
-        SELECT new com.sabujak.gamong.dto.Response.ItemTradeRes(
-            i.id,
-            new com.sabujak.gamong.dto.FileDTO(
-                                f.fileName,
-                                f.fileType,
-                                f.fileSize,
-                                f.fileUrl,
-                                f.fileKey
-                            ),
-            i.hashTag,
-            i.itemName,
-            i.title,
-            i.description,
-            i.price,
-            u.businessAddress,
-            COUNT(DISTINCT c.id),
-            COUNT(DISTINCT b2.id)
-        )
-        FROM Bookmark b
-        JOIN b.itemTrade i
-        JOIN i.user u
-        LEFT JOIN i.chatRoomList c
-        LEFT JOIN i.bookmarkList b2
-        LEFT JOIN i.joinItemTradeImageList f
-        WHERE b.user = :user
-        GROUP BY i.id, i.hashTag, i.itemName, i.title, i.description, i.price, u.businessAddress
-    """)
-    List<ItemTradeRes> findBookmarkedItemTradesByUser(@Param("user") User user);
+    SELECT i
+    FROM Bookmark b
+    JOIN b.itemTrade i
+    JOIN i.user u
+    LEFT JOIN FETCH i.chatRoomList
+    LEFT JOIN FETCH i.bookmarkList
+    LEFT JOIN FETCH i.joinItemTradeImageList
+    WHERE b.user = :user
+""")
+    List<ItemTrade> findBookmarkedItemTradesByUserEntity(@Param("user") User user);
+
 }
