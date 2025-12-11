@@ -1,5 +1,6 @@
 package com.sabujak.gamong.controller;
 
+import com.sabujak.gamong.dto.Request.ReqBizStatus;
 import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
@@ -9,10 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,4 +45,11 @@ public class UserController {
         JwtRes newAccessToken = userService.reissuedRefreshJwt(request);
         return ResponseEntity.status(HttpStatus.OK).body(newAccessToken);
     }
+
+    // 사업자등록번호 조회
+    @GetMapping("/biz-status")
+    public ResponseEntity<Object> bizStatus(String bizNum) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.bizStatus(bizNum));
+    }
+
 }
