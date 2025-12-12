@@ -5,6 +5,7 @@ import com.sabujak.gamong.dto.Request.ReqBizStatus;
 import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
+import com.sabujak.gamong.dto.Response.KakaoAddressRes;
 import com.sabujak.gamong.exception.AlreadyLoginIdException;
 import com.sabujak.gamong.exception.HandleJwtException;
 import com.sabujak.gamong.exception.InvalidLoginIdException;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -51,7 +53,13 @@ public class UserService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Value("${kakao.rest-api-key}")
+    private String kakaoRestApiKey;
+
+    private final WebClient kakaoWebClient;
+
     // 회원가입
+
     @Transactional
     public void signUp(ReqSignUp reqSignUp) {
         userRepository.findByLoginId(reqSignUp.loginId())
@@ -73,8 +81,8 @@ public class UserService {
 
         userRepository.save(user);
     }
-
     // 로그인
+
     public JwtRes login(HttpServletResponse response, ReqLogin reqLogin) {
         User user = userRepository.findByLoginId(reqLogin.loginId())
                 .orElseThrow(InvalidLoginIdException::new);
@@ -102,8 +110,8 @@ public class UserService {
 
         return new JwtRes(accessJwt);
     }
-
     // 로그아웃
+
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         String refreshJwt = jwtUtility.extractTokenFromCookies(request, "refresh_jwt");
 
@@ -125,8 +133,8 @@ public class UserService {
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
     }
-
     // refreshJwt 재발급
+
     @Transactional
     public JwtRes reissuedRefreshJwt(HttpServletRequest request) {
 
@@ -157,8 +165,8 @@ public class UserService {
 
         return new JwtRes(newAccessJwt);
     }
-
     // 사업자등록번호 조회
+
     public Object bizStatus(String bizNum) {
 
         String url = "https://api.odcloud.kr/api/nts-businessman/v1/status"
@@ -175,6 +183,20 @@ public class UserService {
         HttpEntity<?> entity = new HttpEntity<>(body, headers);
 
         return restTemplate.postForObject(url, entity, Object.class);
+    }
+
+    // 카카오 주소 좌표 변환 api
+    public KakaoAddressRes searchAddress(String address) {
+
+        return kakaoWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/v2/local/search/address.json")
+                        .queryParam("query", address)
+                        .build())
+                .header("Authorization", "KakaoAK " + kakaoRestApiKey)
+                .retrieve()
+                .bodyToMono(KakaoAddressRes.class)
+                .block();
     }
 }
 

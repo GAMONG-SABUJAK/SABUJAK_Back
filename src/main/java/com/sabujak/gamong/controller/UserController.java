@@ -4,6 +4,7 @@ import com.sabujak.gamong.dto.Request.ReqBizStatus;
 import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
+import com.sabujak.gamong.dto.Response.KakaoAddressRes;
 import com.sabujak.gamong.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,6 +51,12 @@ public class UserController {
     @GetMapping("/biz-status")
     public ResponseEntity<Object> bizStatus(String bizNum) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.bizStatus(bizNum));
+    }
+
+    // 카카오 주소 좌표 변환 api
+    @GetMapping("/address/search")
+    public ResponseEntity<KakaoAddressRes> searchAddress(@RequestParam String address) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.searchAddress(address));
     }
 
 }
