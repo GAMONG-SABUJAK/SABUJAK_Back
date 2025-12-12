@@ -1,7 +1,6 @@
 package com.sabujak.gamong.service;
 
 import com.sabujak.gamong.domain.User;
-import com.sabujak.gamong.dto.Request.ReqBizStatus;
 import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
@@ -175,7 +174,7 @@ public class UserService {
 
         // 국세청은 배열 형태로 요청해야 함
         Map<String, Object> body = new HashMap<>();
-        body.put("b_no", List.of(bizNum)); // 주의: [] 형태여야 API 정상 동작
+        body.put("b_no", List.of(bizNum));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -193,7 +192,6 @@ public class UserService {
                         .path("/v2/local/search/address.json")
                         .queryParam("query", address)
                         .build())
-                .header("Authorization", "KakaoAK " + kakaoRestApiKey)
                 .retrieve()
                 .bodyToMono(KakaoAddressRes.class)
                 .block();

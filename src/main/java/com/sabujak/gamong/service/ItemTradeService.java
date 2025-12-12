@@ -7,7 +7,6 @@ import com.sabujak.gamong.dto.FileDTO;
 import com.sabujak.gamong.dto.Request.ReqItemTrade;
 import com.sabujak.gamong.dto.Response.ItemTradeByAddressRes;
 import com.sabujak.gamong.dto.Response.ItemTradeRes;
-import com.sabujak.gamong.dto.Response.ItemTradeWithoutFileDtoRes;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.exception.InvalidUserException;
 import com.sabujak.gamong.repository.BookmarkRepository;

@@ -3,7 +3,6 @@ package com.sabujak.gamong.repository;
 import com.sabujak.gamong.domain.Bookmark;
 import com.sabujak.gamong.domain.ItemTrade;
 import com.sabujak.gamong.domain.User;
-import com.sabujak.gamong.dto.Response.ItemTradeRes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
