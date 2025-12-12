@@ -7,7 +7,6 @@ import com.sabujak.gamong.dto.FileDTO;
 import com.sabujak.gamong.dto.Response.ItemTradeRes;
 import com.sabujak.gamong.exception.InvalidItemTradeIdException;
 import com.sabujak.gamong.repository.BookmarkRepository;
-import com.sabujak.gamong.repository.ChatRoomRepository;
 import com.sabujak.gamong.repository.ItemTradeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

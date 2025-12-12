@@ -1,6 +1,5 @@
 package com.sabujak.gamong.controller;
 
-import com.sabujak.gamong.dto.Request.ReqBizStatus;
 import com.sabujak.gamong.dto.Request.ReqLogin;
 import com.sabujak.gamong.dto.Request.ReqSignUp;
 import com.sabujak.gamong.dto.Response.JwtRes;
